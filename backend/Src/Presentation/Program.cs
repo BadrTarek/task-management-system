@@ -124,6 +124,12 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<TaskManagementSystemDBContext>();
+    db.Database.Migrate();
+}
+
 app.MapControllers();
 
 app.Run();
