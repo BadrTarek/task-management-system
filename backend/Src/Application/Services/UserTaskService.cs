@@ -26,27 +26,61 @@ public class UserTaskService : IUserTaskService
 
     public async Task<UserTaskDto> CreateTaskAsync(CreateUserTaskDto createTaskDto)
     {
-        var task = _mapper.Map<UserTask>(createTaskDto);
-        task.Status = UserTaskStatuses.ToDo;
-        var createdTask = await _unitOfWork.UserTaskRepository.CreateUserTaskAsync(task);
-        await _unitOfWork.SaveChangesAsync();
-        return _mapper.Map<UserTaskDto>(createdTask);
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            var task = _mapper.Map<UserTask>(createTaskDto);
+            task.Status = UserTaskStatuses.ToDo;
+            var createdTask = await _unitOfWork.UserTaskRepository.CreateUserTaskAsync(task);
+
+            await _unitOfWork.CommitAsync();
+
+            return _mapper.Map<UserTaskDto>(createdTask);
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
+        finally
+        {
+            // Ensure transaction is disposed
+            await _unitOfWork.DisposeAsync();
+        }
     }
 
     public async Task<UserTaskDto> UpdateTaskAsync(UpdateUserTaskDto updateTaskDto)
     {
-        var existingTask = await _unitOfWork.UserTaskRepository.GetUserTaskByIdAsync(updateTaskDto.Id);
-        if (existingTask == null)
+        try
         {
-            throw new InvalidOperationException("Task not found");
+            await _unitOfWork.BeginTransactionAsync();
+            var existingTask = await _unitOfWork.UserTaskRepository.GetUserTaskByIdAsync(updateTaskDto.Id);
+            if (existingTask == null)
+            {
+                throw new InvalidOperationException("Task not found");
+            }
+
+            // Updatable properties
+            existingTask.Title = updateTaskDto.Title;
+            existingTask.Description = updateTaskDto.Description;
+            existingTask.DueDate = updateTaskDto.DueDate;
+            existingTask.Status = updateTaskDto.Status;
+
+            var updatedTask = await _unitOfWork.UserTaskRepository.UpdateUserTaskAsync(existingTask);
+
+            await _unitOfWork.CommitAsync();
+
+            return _mapper.Map<UserTaskDto>(updatedTask);
         }
-        // Updatable properties
-        existingTask.Title = updateTaskDto.Title;
-        existingTask.Description = updateTaskDto.Description;
-        existingTask.DueDate = updateTaskDto.DueDate;
-        existingTask.Status = updateTaskDto.Status;
-        var updatedTask = await _unitOfWork.UserTaskRepository.UpdateUserTaskAsync(existingTask);
-        await _unitOfWork.SaveChangesAsync();
-        return _mapper.Map<UserTaskDto>(updatedTask);
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
+        finally
+        {
+            // Ensure transaction is disposed
+            await _unitOfWork.DisposeAsync();
+        }
     }
 }

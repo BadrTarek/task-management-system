@@ -2,10 +2,13 @@ using Domain.Interfaces.Repositories;
 
 namespace Domain.Interfaces
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IAsyncDisposable
     {
         public IUserTaskRepository UserTaskRepository { get; }
         public IUserRepository UserRepository { get; }
-        Task<int> SaveChangesAsync();
+        Task BeginTransactionAsync();
+        Task CommitAsync();
+        Task RollbackAsync();
+        Task<int> CompleteAsync();
     }
 }

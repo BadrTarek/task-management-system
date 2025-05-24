@@ -25,26 +25,41 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseDto> SignUpAsync(SignupDto signupDto)
     {
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
 
-        var existingUser = await _unitOfWork.UserRepository.GetUserByEmail(signupDto.Email);
-        if (existingUser != null)
-        {
-            throw new InvalidOperationException("Email already exists");
-        }
-        var user = _mapper.Map<User>(signupDto);
-        var createdUser = await _unitOfWork.UserRepository.CreateUser(user);
-        await _unitOfWork.SaveChangesAsync();
-        var token = _tokenManager.GenerateToken(createdUser.Id.ToString(), createdUser.Email, createdUser.Name);
-        return new AuthResponseDto
-        {
-            Token = token,
-            User = new UserDto
+            var existingUser = await _unitOfWork.UserRepository.GetUserByEmail(signupDto.Email);
+            if (existingUser != null)
             {
-                Id = createdUser.Id,
-                Name = createdUser.Name,
-                Email = createdUser.Email
+                throw new InvalidOperationException("Email already exists");
             }
-        };
+            var user = _mapper.Map<User>(signupDto);
+            var createdUser = await _unitOfWork.UserRepository.CreateUser(user);
+            var token = _tokenManager.GenerateToken(createdUser.Id.ToString(), createdUser.Email, createdUser.Name);
+
+            await _unitOfWork.CommitAsync();
+
+            return new AuthResponseDto
+            {
+                Token = token,
+                User = new UserDto
+                {
+                    Id = createdUser.Id,
+                    Name = createdUser.Name,
+                    Email = createdUser.Email
+                }
+            };
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
+        finally
+        {
+            await _unitOfWork.DisposeAsync();
+        }
     }
 
     public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)

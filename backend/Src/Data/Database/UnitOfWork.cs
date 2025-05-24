@@ -1,15 +1,16 @@
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces;
 using AutoMapper;
 using Data.Repositories.Repositories;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Data.Database.UnitOfWorks;
 
 public class UnitOfWork : IUnitOfWork
 {
     private readonly TaskManagementSystemDBContext _dbContext;
+    private IDbContextTransaction _transaction;
     private readonly IMapper _mapper;
     private readonly ILogger _logger;
 
@@ -35,14 +36,33 @@ public class UnitOfWork : IUnitOfWork
             return new UserTaskRepository(_dbContext, _mapper, _logger);
         }
     }
+    public async Task BeginTransactionAsync()
+    {
+        _transaction = await _dbContext.Database.BeginTransactionAsync();
+    }
 
-    public async Task<int> SaveChangesAsync()
+    public async Task CommitAsync()
+    {
+        if (_transaction != null)
+            await _transaction.CommitAsync();
+    }
+
+    public async Task RollbackAsync()
+    {
+        if (_transaction != null)
+            await _transaction.RollbackAsync();
+    }
+
+    public async Task<int> CompleteAsync()
     {
         return await _dbContext.SaveChangesAsync();
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        _dbContext.Dispose();
+        if (_transaction != null)
+            await _transaction.DisposeAsync();
+
+        await _dbContext.DisposeAsync();
     }
 }

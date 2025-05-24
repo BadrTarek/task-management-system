@@ -26,17 +26,7 @@ public class UserRepository : IUserRepository
         _logger.LogDebug("Creating user with email: {Email}", user.Email);
         var userModel = _mapper.Map<UserDBModel>(user);
         await _dbContext.Set<UserDBModel>().AddAsync(userModel);
-        return _mapper.Map<UserEntity>(userModel);
-    }
-
-    public async Task<UserEntity?> GetUserById(int id)
-    {
-        var userModel = await _dbContext.Set<UserDBModel>().FindAsync(id);
-        if (userModel == null)
-        {
-            _logger.LogWarning("User with ID: {Id} not found", id);
-            return null;
-        }
+        await _dbContext.SaveChangesAsync();
         return _mapper.Map<UserEntity>(userModel);
     }
 
@@ -50,19 +40,6 @@ public class UserRepository : IUserRepository
             _logger.LogWarning("User with email: {Email} not found", email);
             return null;
         }
-        return _mapper.Map<UserEntity>(userModel);
-    }
-
-    public async Task<UserEntity?> UpdateUser(UserEntity user)
-    {
-        _logger.LogDebug("Updating user with ID: {Id}", user.Id);
-        var userModel = await _dbContext.Set<UserDBModel>().FindAsync(user.Id);
-        if (userModel == null)
-        {
-            _logger.LogWarning("User with ID: {Id} not found", user.Id);
-            return null;
-        }
-        _mapper.Map(user, userModel);
         return _mapper.Map<UserEntity>(userModel);
     }
 }
