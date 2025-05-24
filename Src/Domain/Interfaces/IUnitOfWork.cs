@@ -1,13 +1,11 @@
-
 using Domain.Interfaces.Repositories;
 
-namespace Domain.Interfaces
+namespace TaskManagementSystem.Domain.Interfaces
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         public IUserTaskRepository UserTaskRepository { get; }
         public IUserRepository UserRepository { get; }
-        public Task CommitAsync();
-        public Task RollbackAsync();
+        Task<int> SaveChangesAsync();
     }
 }
