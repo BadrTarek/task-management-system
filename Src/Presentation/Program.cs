@@ -90,7 +90,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
 
 // Register Services
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IUserTaskService, UserTaskService>();
 
 
 // Configure CORS
