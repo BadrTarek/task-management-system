@@ -1,0 +1,150 @@
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# StyleCop
+StyleCopReport.xml
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (Mono Auto Generated)
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code directories
+.vscode/
+.history/
+
+# Others
+ClientBin/
+~$*
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.ncb
+*.sdf
+*.opensdf
+*.pdb
+*.ipch
+*.aps
+*.res
+*.ilk
+*.exp
+*.iobj
+*.ipdb
+*.ds_store
+.vs/
+
+# Visual Studio 2019/2022
+.vs/ 
+*.vcxproj.user
+*.ruleset
+.vscode/
+
+# Rider
+.idea/
+
+# dotCover
+*.dotCover
+
+# R#
+_ReSharper.*
+*.DotSettings.user
+
+# NUnit
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Publish results
+[Pp]ublish/
+[Pp]ublished[Pp]ackages/
+
+# PublishWeb file/folder
+*.PublishWebLocalData
+
+# Web server folders
+wwwroot/
+local.settings.json
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+
+# JetBrains Rider
+.idea/
+
+# MSBuild Binary and Cache
+MSBuild*
+
+# TeamCity
+_TeamCity/
+
+# Azure DevOps
+.env
+
+# Others
+sql
+*.mdf
+*.ldf
+
+# Others
+.vscode/
+.history/
+*.user
+*.userosscache
+*.sln.docstates
+
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.DocumentRevisions-V100
+.FBCIndex
+.FBSIndex
+.FBCLockFolder
+.FB*temp*
+.FB*bin*
+
+# End of macOS
+
+.fake

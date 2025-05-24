@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+      - "5001:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_CONNECTION=Host=db;Database=taskmanagement;Username=postgres;Password=yourpassword
+      - JWT_SECRET=your_super_secure_jwt_secret_key_min_32_chars
+      - JWT_ISSUER=TaskManagementSystem
+      - JWT_AUDIENCE=TaskManagementSystem
+      - JWT_EXPIRATION_HOURS=24
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=yourpassword
+      - POSTGRES_DB=taskmanagement
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
