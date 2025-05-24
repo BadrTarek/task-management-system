@@ -6,7 +6,7 @@ namespace Application.UserTaskDtos.Dtos
     public class UpdateUserTaskDto
     {
         [Required]
-        public required int id { get; set; }
+        public required int Id { get; set; }
 
         [Required]
         [StringLength(100)]
