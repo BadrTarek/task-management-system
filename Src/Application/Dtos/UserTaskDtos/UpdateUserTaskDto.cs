@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Domain.Enums;
 
-namespace TaskManagementSystem.Application.UserTaskDtos.Dtos
+namespace Application.UserTaskDtos.Dtos
 {
     public class UpdateUserTaskDto
     {
