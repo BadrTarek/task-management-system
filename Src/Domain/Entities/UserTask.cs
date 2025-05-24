@@ -9,7 +9,7 @@ namespace Domain.Entities
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateTime? DueDate { get; set; }
         public UserTaskStatuses Status { get; set; }
         public int UserId { get; set; }
         public User? User { get; set; }
