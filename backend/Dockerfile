@@ -1,24 +1,24 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["TaskManagementSystem.sln", "./"]
+
+# Copy csproj and restore dependencies
 COPY ["Src/Presentation/Presentation.csproj", "Src/Presentation/"]
 COPY ["Src/Application/Application.csproj", "Src/Application/"]
 COPY ["Src/Domain/Domain.csproj", "Src/Domain/"]
 COPY ["Src/Data/Data.csproj", "Src/Data/"]
-RUN dotnet restore
+RUN dotnet restore "Src/Presentation/Presentation.csproj"
+
+# Copy the rest of the code
 COPY . .
-WORKDIR "/src/Src/Presentation"
-RUN dotnet build "Presentation.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "Presentation.csproj" -c Release -o /app/publish
+# Build and publish
+RUN dotnet build "Src/Presentation/Presentation.csproj" -c Release -o /app/build
+RUN dotnet publish "Src/Presentation/Presentation.csproj" -c Release -o /app/publish
 
-FROM base AS final
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Presentation.dll"]
+COPY --from=build /app/publish .
+EXPOSE 80
+EXPOSE 443
+ENTRYPOINT ["dotnet", "Presentation.dll"] 
