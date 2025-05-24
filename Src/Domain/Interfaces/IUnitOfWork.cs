@@ -1,6 +1,6 @@
 using Domain.Interfaces.Repositories;
 
-namespace TaskManagementSystem.Domain.Interfaces
+namespace Domain.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

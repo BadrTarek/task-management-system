@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Domain.Interfaces.Repositories;
-using TaskManagementSystem.Domain.Interfaces;
+using Domain.Interfaces;
 using AutoMapper;
 using Data.Repositories.Repositories;
 
