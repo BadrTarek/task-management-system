@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Domain.Interfaces;
 using Data.Database.UnitOfWorks;
+using Domain.Tokens;
+using Domain.PasswordManagers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,21 @@ var builder = WebApplication.CreateBuilder(args);
 Env.Load();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddSingleton<ITokenManager, JwtTokenManager>(
+    provider =>
+    {
+        var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ??
+            throw new InvalidOperationException("JWT secret key not found in environment variables.");
+        var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "TaskManagementSystem";
+        var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "TaskManagementSystem";
+        var expirationTime = DateTime.UtcNow.AddHours(int.Parse(
+            Environment.GetEnvironmentVariable("JWT_EXPIRATION_HOURS") ?? "1"
+        ));
+        return new JwtTokenManager(jwtSecret, jwtIssuer, jwtAudience, expirationTime);
+    }
+);
+builder.Services.AddSingleton<IPasswordManager, BCryptPasswordManager>();
 
 // Add services to the container
 builder.Services.AddControllers()
@@ -72,7 +89,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
 );
 
 // Register Services
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserService, AuthService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 
 
