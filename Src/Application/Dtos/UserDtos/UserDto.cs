@@ -1,5 +1,5 @@
 
-namespace TaskManagementSystem.Application.Dtos
+namespace Application.Dtos.UserDtos
 {
     public class UserDto
     {
