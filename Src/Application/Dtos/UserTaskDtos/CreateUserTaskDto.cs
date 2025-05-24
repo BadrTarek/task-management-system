@@ -11,7 +11,8 @@ namespace Application.UserTaskDtos.Dtos
         [StringLength(500)]
         public string? Description { get; set; }
 
-        public required int UserId { get; set; }
+        [Required]
+        public int UserId { get; set; }
 
         public DateTime? DueDate { get; set; }
     }
