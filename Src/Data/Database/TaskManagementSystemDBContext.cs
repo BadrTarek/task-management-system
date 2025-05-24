@@ -17,7 +17,7 @@ public class TaskManagementSystemDBContext : DbContext
         modelBuilder.HasDefaultSchema("public");
     }
 
-    protected void _UpdateCreatedAtFieldIfExists(EntityEntry entry, DateTime DateTimeNow)
+    protected static void _UpdateCreatedAtFieldIfExists(EntityEntry entry, DateTime DateTimeNow)
     {
         var entityType = entry.Entity.GetType();
         var hasProperty = entityType.GetProperties().Any(prop => prop.Name == "CreatedAt");
@@ -25,7 +25,7 @@ public class TaskManagementSystemDBContext : DbContext
             entry.Property("CreatedAt").CurrentValue = DateTimeNow;
     }
 
-    protected void _UpdateUpdatedAtFieldIfExists(EntityEntry entry, DateTime DateTimeNow)
+    protected static void _UpdateUpdatedAtFieldIfExists(EntityEntry entry, DateTime DateTimeNow)
     {
         var entityType = entry.Entity.GetType();
         var hasProperty = entityType.GetProperties().Any(prop => prop.Name == "UpdatedAt");
