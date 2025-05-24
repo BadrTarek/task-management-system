@@ -34,9 +34,8 @@ namespace Data.Database.Models
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
 
-        [Required]
         [Column("due_date")]
-        public DateTime DueDate { get; set; }
+        public DateOnly? DueDate { get; set; }
 
         [Required]
         [Column("status")]

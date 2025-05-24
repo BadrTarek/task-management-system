@@ -10,6 +10,6 @@ namespace Application.UserTaskDtos.Dtos
         public UserTaskStatuses Status { get; set; }
         public required int UserId { get; set; }
         public DateTime? CreatedAt { get; set; }
-        public DateTime? DueDate { get; set; }
+        public DateOnly? DueDate { get; set; }
     }
 }

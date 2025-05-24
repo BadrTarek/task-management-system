@@ -14,7 +14,7 @@ namespace Application.UserTaskDtos.Dtos
         [Required]
         public int UserId { get; set; }
 
-        public DateTime? DueDate { get; set; }
+        public DateOnly? DueDate { get; set; }
     }
 
 }
