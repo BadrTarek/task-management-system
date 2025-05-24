@@ -40,11 +40,11 @@ public class UserRepository : IUserRepository
         return _mapper.Map<UserEntity>(userModel);
     }
 
-    public async Task<UserEntity?> GetUserByEmailAndPassword(string email, string password)
+    public async Task<UserEntity?> GetUserByEmail(string email)
     {
         _logger.LogDebug("Getting user by email: {Email}", email);
         var userModel = await _dbContext.Set<UserDBModel>()
-            .FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+            .FirstOrDefaultAsync(u => u.Email == email);
         if (userModel == null)
         {
             _logger.LogWarning("User with email: {Email} not found", email);

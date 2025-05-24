@@ -6,7 +6,7 @@ namespace Domain.Interfaces.Repositories
     {
         public Task<User> CreateUser(User user);
         public Task<User?> GetUserById(int id);
-        public Task<User?> GetUserByEmailAndPassword(string email, string password);
+        public Task<User?> GetUserByEmail(string email);
         public Task<User?> UpdateUser(User user);
     }
 }
