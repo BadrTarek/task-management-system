@@ -9,11 +9,11 @@ namespace Data.Database.UnitOfWorks;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly DbContext _dbContext;
+    private readonly TaskManagementSystemDBContext _dbContext;
     private readonly IMapper _mapper;
     private readonly ILogger _logger;
 
-    public UnitOfWork(DbContext dbContext, IMapper mapper, ILogger logger)
+    public UnitOfWork(TaskManagementSystemDBContext dbContext, IMapper mapper, ILogger<UnitOfWork> logger)
     {
         _mapper = mapper;
         _dbContext = dbContext;
