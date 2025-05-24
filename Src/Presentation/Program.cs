@@ -89,7 +89,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
 );
 
 // Register Services
-builder.Services.AddScoped<IUserService, AuthService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 
 
