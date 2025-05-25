@@ -45,7 +45,7 @@ export default function TaskCard({ task, onStatusUpdate, onClick }: TaskCardProp
     };
 
     return (
-        <div className="card p-4 cursor-pointer group hover:shadow-lg transition-all duration-200 border border-gray-200 hover:border-primary-300">
+        <div className="card p-4 cursor-pointer group hover:shadow-lg transition-all duration-200 border border-gray-200 hover:border-primary-300" onClick={onClick}>
             {/* Header Section - Always present */}
             <div className="flex items-start justify-between mb-4">
                 <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors duration-200 flex-1 pr-3">
