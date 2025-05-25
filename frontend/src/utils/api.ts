@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5274/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:5274/api';
 
 export interface ApiResponse<T> {
     data?: T;
