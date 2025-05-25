@@ -5,10 +5,12 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api
     ports:
       - "3000:3000"
     environment:
-      - API_BASE_URL=http://backend:80/api
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api
     depends_on:
       - backend
 
@@ -17,11 +19,12 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8080:8080"
       - "443:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - DB_CONNECTION=Host=postgres;Port=5555;Database=taskmanagement;Username=postgres;Password=postgres
+      - ASPNETCORE_URLS=http://+:8080
+      - DB_CONNECTION=Host=postgres;Port=5432;Database=taskmanagement;Username=postgres;Password=postgres
       - JWT_SECRET=2d70f1e410fc665d84b6cbb0cc4126b9b201dfdfdeac25fe82de88351c270447
       - JWT_ISSUER=task-management-system
       - JWT_AUDIENCE=task-management-system
